@@ -1,0 +1,9 @@
+{
+  "name": "wedding-rsvp-site",
+  "version": "1.0.0",
+  "description": "Katelyn Somerville and David Gabinet wedding RSVP website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

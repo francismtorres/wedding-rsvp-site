@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSVP Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="section section-cream admin-page">
+      <div class="container">
+        <p class="section-subtitle">Dashboard</p>
+        <h1 class="section-title">RSVP Admin</h1>
+        <div class="admin-key-row">
+          <label>
+            <span>Admin Key</span>
+            <input type="password" id="adminKey" placeholder="Enter admin key if enabled" />
+          </label>
+          <button class="button" id="loadDashboard">Load Dashboard</button>
+        </div>
+        <div class="card-grid three-col admin-stats" id="statsGrid">
+          <article class="card centered-card compact-card">
+            <h3>Total RSVPs</h3>
+            <p id="totalRsvps">0</p>
+          </article>
+          <article class="card centered-card compact-card">
+            <h3>RSVPs with Plus One</h3>
+            <p id="plusOnes">0</p>
+          </article>
+          <article class="card centered-card compact-card">
+            <h3>Total Guests</h3>
+            <p id="totalGuests">0</p>
+          </article>
+        </div>
+        <article class="card table-card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Dietary</th>
+                  <th>Submitted</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="rsvpTableBody">
+                <tr>
+                  <td colspan="6">No entries loaded yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="form-message" id="adminMessage"></p>
+        </article>
+      </div>
+    </main>
+    <script src="/admin.js"></script>
+  </body>
+</html>

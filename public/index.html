@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSVP</title>
+    <meta
+      name="description"
+      content="Wedding RSVP website for Katelyn Somerville and David Gabinet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero section section-cream" id="top">
+      <img src="/assets/floral.png" alt="Watercolor floral arrangement" class="floral floral-top-left" />
+      <img src="/assets/floral.png" alt="" aria-hidden="true" class="floral floral-top-right" />
+      <img src="/assets/floral.png" alt="" aria-hidden="true" class="floral floral-bottom-left" />
+      <img src="/assets/floral.png" alt="" aria-hidden="true" class="floral floral-bottom-right" />
+
+      <div class="hero-inner fade-in-up">
+        <p class="eyebrow">It is with great pleasure</p>
+        <h1 class="couple-name">Katelyn Somerville</h1>
+        <div class="ampersand">&amp;</div>
+        <h1 class="couple-name">David Gabinet</h1>
+        <p class="hero-copy">
+          invite you to join them in the celebration of their marriage
+        </p>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="icon">📅</span>
+            <span>Sunday, August 16, 2026</span>
+          </div>
+          <div class="meta-item">
+            <span class="icon">🕘</span>
+            <span>Ceremony at 11:00 AM</span>
+          </div>
+        </div>
+        <div class="countdown" id="countdown">
+          <div class="count-box"><span id="days">000</span><small>Days</small></div>
+          <div class="count-box"><span id="hours">00</span><small>Hours</small></div>
+          <div class="count-box"><span id="minutes">00</span><small>Minutes</small></div>
+          <div class="count-box"><span id="seconds">00</span><small>Seconds</small></div>
+        </div>
+        <a href="#rsvp" class="button">RSVP Now</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="section section-taupe" id="itinerary">
+        <div class="container">
+          <p class="section-subtitle">Schedule of Events</p>
+          <h2 class="section-title">Itinerary</h2>
+          <div class="card-grid two-by-two">
+            <article class="card info-card">
+              <div class="card-icon">🕘</div>
+              <h3>Ceremony</h3>
+              <p>11:00 AM – 11:30 AM</p>
+            </article>
+            <article class="card info-card">
+              <div class="card-icon lavender">🍽️</div>
+              <h3>Cocktail Hour</h3>
+              <p>11:45 AM – 12:45 PM</p>
+            </article>
+            <article class="card info-card">
+              <div class="card-icon peach">🍽️</div>
+              <h3>Brunch Buffet</h3>
+              <p>1:30 PM – 3:30 PM</p>
+            </article>
+            <article class="card info-card">
+              <div class="card-icon">❤</div>
+              <h3>Reception</h3>
+              <p>4:00 PM – 7:00 PM</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-cream" id="dress-code">
+        <div class="container narrow">
+          <p class="section-subtitle">Attire</p>
+          <h2 class="section-title">Dress Code</h2>
+          <article class="card centered-card">
+            <div class="card-icon lavender">👔</div>
+            <h3>Formal Garden Party</h3>
+            <p>
+              We kindly invite our guests to dress in elegant cocktail attire, inspired by a
+              summer garden setting. Soft pastels, florals and light romantic tones are
+              encouraged to complement the atmosphere of the day.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-taupe" id="venue">
+        <div class="container">
+          <p class="section-subtitle">Ceremony &amp; Reception</p>
+          <h2 class="section-title">The Royal Ashburn Golf Club</h2>
+          <p class="venue-address">📍 995 Myrtle Road West, Whitby, Ontario L0B 1A0</p>
+          <div class="card-grid two-col">
+            <article class="card">
+              <div class="card-icon">🚗</div>
+              <h3>Parking</h3>
+              <p>Free parking available on-site</p>
+            </article>
+            <article class="card">
+              <div class="card-icon">🏨</div>
+              <h3>Accommodations</h3>
+              <p>We recommend the Hilton Garden Inn Ajax for overnight stays</p>
+            </article>
+          </div>
+          <div class="button-row">
+            <a
+              class="button button-outline"
+              href="https://www.google.com/maps/search/?api=1&query=995+Myrtle+Road+West,+Whitby,+Ontario+L0B+1A0"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-cream" id="registry">
+        <div class="container narrow">
+          <h2 class="section-title solo-title">Gift Registry</h2>
+          <article class="card centered-card">
+            <div class="card-icon peach">🎁</div>
+            <p class="italic-quote">
+              “Should you wish to generously offer the couple a wedding present, monetary gifts
+              would be most appreciated.”
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-taupe" id="faq">
+        <div class="container narrow">
+          <p class="section-subtitle">Questions</p>
+          <h2 class="section-title">FAQ</h2>
+          <div class="accordion-group">
+            <details class="accordion-item">
+              <summary>Can I bring a plus one?</summary>
+              <p>
+                If your invitation says “and guest” and/or your plus one's name is on the
+                invitation, you can bring someone!
+              </p>
+            </details>
+            <details class="accordion-item">
+              <summary>Is there parking at the venue?</summary>
+              <p>Yes! Free parking is available on-site at The Royal Ashburn Golf Club.</p>
+            </details>
+            <details class="accordion-item">
+              <summary>Where should I stay if I'm travelling from out of town?</summary>
+              <p>
+                We recommend the Hilton Garden Inn Ajax for overnight accommodations. It's
+                conveniently located near the venue.
+              </p>
+            </details>
+            <details class="accordion-item">
+              <summary>When is the RSVP deadline?</summary>
+              <p>Please RSVP by June 15, 2026.</p>
+            </details>
+            <details class="accordion-item">
+              <summary>What is the dress code?</summary>
+              <p>
+                The dress code is Formal Garden Party. We kindly invite our guests to dress in
+                elegant cocktail attire, inspired by a summer garden setting. Soft pastels,
+                florals and light romantic tones are encouraged.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-cream" id="rsvp">
+        <div class="container narrow">
+          <p class="section-subtitle">Kindly Respond by June 15, 2026</p>
+          <h2 class="section-title">RSVP</h2>
+          <article class="card form-card">
+            <form id="rsvpForm" novalidate>
+              <label>
+                <span>Full Name</span>
+                <input type="text" name="fullName" required />
+              </label>
+              <label>
+                <span>Email Address</span>
+                <input type="email" name="email" required />
+              </label>
+              <label>
+                <span>Phone Number</span>
+                <input type="tel" name="phone" required />
+              </label>
+              <label>
+                <span>Dietary Restrictions &amp; Allergies</span>
+                <select name="dietaryOption" id="dietaryOption" required>
+                  <option value="">Select an option</option>
+                  <option>None</option>
+                  <option>Vegetarian</option>
+                  <option>Vegan</option>
+                  <option>Gluten-Free</option>
+                  <option>Nut Allergy</option>
+                  <option>Dairy-Free</option>
+                  <option>Shellfish Allergy</option>
+                  <option>Halal</option>
+                  <option>Kosher</option>
+                  <option>Other/Multiple Allergies</option>
+                </select>
+              </label>
+              <label id="dietaryDetailsField" class="hidden">
+                <span>Please share the details</span>
+                <textarea name="dietaryDetails" rows="4"></textarea>
+              </label>
+              <button type="submit" class="button button-full">Submit RSVP</button>
+              <p class="form-message" id="formMessage"></p>
+            </form>
+            <div id="successState" class="success-state hidden" aria-live="polite">
+              <div class="success-heart">❤</div>
+              <h3>Thank you for your RSVP</h3>
+              <p>We are so excited to celebrate with you.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-taupe" id="contact">
+        <div class="container narrow">
+          <p class="section-subtitle">Get in Touch</p>
+          <h2 class="section-title">Contact Us</h2>
+          <div class="card-grid two-col">
+            <article class="card centered-card compact-card">
+              <div class="card-icon">📞</div>
+              <h3>Katelyn</h3>
+              <p>647-308-0195</p>
+            </article>
+            <article class="card centered-card compact-card">
+              <div class="card-icon">📞</div>
+              <h3>David</h3>
+              <p>905-999-3172</p>
+            </article>
+          </div>
+          <article class="card centered-card contact-card">
+            <p><strong>Email:</strong> davidwedskate08@gmail.com</p>
+            <p><strong>Address:</strong> 2 North Street, Unit 21, Barrie, ON, L4M 2R9</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container narrow footer-inner">
+        <div class="footer-names">Katelyn &amp; David</div>
+        <div class="footer-date">August 16, 2026</div>
+      </div>
+    </footer>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
