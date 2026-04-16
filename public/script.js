@@ -1,24 +1,34 @@
-const countdownTarget = new Date('2026-08-16T11:00:00-04:00').getTime();
-const countdownEls = {
-  days: document.getElementById('days'),
-  hours: document.getElementById('hours'),
-  minutes: document.getElementById('minutes'),
-  seconds: document.getElementById('seconds')
-};
+const weddingDate = new Date('2026-08-16T11:00:00');
 
 function updateCountdown() {
-  const now = Date.now();
-  const distance = Math.max(countdownTarget - now, 0);
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((distance / (1000 * 60)) % 60);
-  const seconds = Math.floor((distance / 1000) % 60);
+  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
 
-  countdownEls.days.textContent = String(days).padStart(3, '0');
-  countdownEls.hours.textContent = String(hours).padStart(2, '0');
-  countdownEls.minutes.textContent = String(minutes).padStart(2, '0');
-  countdownEls.seconds.textContent = String(seconds).padStart(2, '0');
+  const now = new Date();
+  const diff = weddingDate - now;
+
+  if (diff <= 0) {
+    daysEl.textContent = '000';
+    hoursEl.textContent = '00';
+    minutesEl.textContent = '00';
+    secondsEl.textContent = '00';
+    return;
+  }
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = totalSeconds % 60;
+
+  daysEl.textContent = String(days).padStart(3, '0');
+  hoursEl.textContent = String(hours).padStart(2, '0');
+  minutesEl.textContent = String(minutes).padStart(2, '0');
+  secondsEl.textContent = String(seconds).padStart(2, '0');
 }
 
 updateCountdown();
@@ -30,35 +40,161 @@ const form = document.getElementById('rsvpForm');
 const formMessage = document.getElementById('formMessage');
 const successState = document.getElementById('successState');
 
-dietaryOption?.addEventListener('change', () => {
-  const showDetails = dietaryOption.value === 'Other/Multiple Allergies';
-  dietaryDetailsField.classList.toggle('hidden', !showDetails);
-});
+if (dietaryOption && dietaryDetailsField) {
+  dietaryOption.addEventListener('change', () => {
+    const showOther = dietaryOption.value === 'Other/Multiple Allergies';
+    dietaryDetailsField.classList.toggle('hidden', !showOther);
+  });
+}
 
-form?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  formMessage.textContent = 'Submitting your RSVP...';
+if (form) {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  const formData = new FormData(form);
-  const payload = Object.fromEntries(formData.entries());
-
-  try {
-    const response = await fetch('/api/rsvp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Unable to submit RSVP.');
+    if (formMessage) {
+      formMessage.textContent = '';
     }
 
-    form.classList.add('hidden');
-    successState.classList.remove('hidden');
-    formMessage.textContent = '';
+    const formData = new FormData(form);
+
+    const payload = {
+      fullName: String(formData.get('fullName') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      dietaryOption: String(formData.get('dietaryOption') || '').trim(),
+      dietaryDetails: String(formData.get('dietaryDetails') || '').trim()
+    };
+
+    try {
+      const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (formMessage) {
+          formMessage.textContent =
+            result.message || 'Unable to submit RSVP. Please try again.';
+        }
+        return;
+      }
+
+      form.reset();
+      dietaryDetailsField?.classList.add('hidden');
+      form.classList.add('hidden');
+      successState?.classList.remove('hidden');
+    } catch (error) {
+      if (formMessage) {
+        formMessage.textContent =
+          'Network error. Please refresh the page and try again.';
+      }
+    }
+  });
+}
+
+async function loadAdminDashboard() {
+  const statsTotal = document.getElementById('statsTotal');
+  const statsPlusOne = document.getElementById('statsPlusOne');
+  const statsGuests = document.getElementById('statsGuests');
+  const tableBody = document.getElementById('adminTableBody');
+
+  if (!tableBody) return;
+
+  tableBody.innerHTML = `<tr><td colspan="7">Loading RSVPs...</td></tr>`;
+
+  try {
+    const response = await fetch('/api/rsvps', {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.message || 'Unable to load RSVPs.');
+    }
+
+    if (statsTotal) statsTotal.textContent = result.stats.totalRsvps;
+    if (statsPlusOne) statsPlusOne.textContent = result.stats.plusOnes;
+    if (statsGuests) statsGuests.textContent = result.stats.totalGuests;
+
+    if (!result.rsvps.length) {
+      tableBody.innerHTML = `<tr><td colspan="7">No RSVPs yet.</td></tr>`;
+      return;
+    }
+
+    tableBody.innerHTML = result.rsvps
+      .map((entry) => {
+        return `
+          <tr>
+            <td>${escapeHtml(entry.full_name)}</td>
+            <td>${escapeHtml(entry.email)}</td>
+            <td>${escapeHtml(entry.phone)}</td>
+            <td>${escapeHtml(entry.dietary_option)}</td>
+            <td>${escapeHtml(entry.dietary_details || '-')}</td>
+            <td>${formatDate(entry.created_at)}</td>
+            <td>
+              <button class="delete-button" data-id="${entry.id}">Delete</button>
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    tableBody.querySelectorAll('.delete-button').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const id = button.dataset.id;
+        if (!id) return;
+
+        const confirmed = window.confirm('Delete this RSVP?');
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch(`/api/rsvp/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Accept: 'application/json'
+            }
+          });
+
+          const result = await response.json();
+
+          if (!response.ok || !result.ok) {
+            throw new Error(result.message || 'Delete failed.');
+          }
+
+          await loadAdminDashboard();
+        } catch (error) {
+          window.alert('Unable to delete RSVP right now.');
+        }
+      });
+    });
   } catch (error) {
-    formMessage.textContent = error.message;
+    tableBody.innerHTML = `<tr><td colspan="7">Unable to load RSVPs.</td></tr>`;
   }
-});
+}
+
+function formatDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+
+  return date.toLocaleString();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+loadAdminDashboard();
