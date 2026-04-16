@@ -6,10 +6,12 @@ function updateCountdown() {
   const minutesEl = document.getElementById('minutes');
   const secondsEl = document.getElementById('seconds');
 
-  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+    return;
+  }
 
   const now = new Date();
-  const diff = weddingDate - now;
+  const diff = weddingDate.getTime() - now.getTime();
 
   if (diff <= 0) {
     daysEl.textContent = '000';
@@ -20,9 +22,9 @@ function updateCountdown() {
   }
 
   const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / (60 * 60 * 24));
-  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
   daysEl.textContent = String(days).padStart(3, '0');
@@ -31,28 +33,57 @@ function updateCountdown() {
   secondsEl.textContent = String(seconds).padStart(2, '0');
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-const dietaryOption = document.getElementById('dietaryOption');
-const dietaryDetailsField = document.getElementById('dietaryDetailsField');
-const form = document.getElementById('rsvpForm');
-const formMessage = document.getElementById('formMessage');
-const successState = document.getElementById('successState');
-
-if (dietaryOption && dietaryDetailsField) {
-  dietaryOption.addEventListener('change', () => {
-    const showOther = dietaryOption.value === 'Other/Multiple Allergies';
-    dietaryDetailsField.classList.toggle('hidden', !showOther);
-  });
+function initCountdown() {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 }
 
-if (form) {
+function initRsvpForm() {
+  const form = document.getElementById('rsvpForm');
+  const dietaryOption = document.getElementById('dietaryOption');
+  const dietaryDetailsField = document.getElementById('dietaryDetailsField');
+  const dietaryDetailsTextarea = dietaryDetailsField
+    ? dietaryDetailsField.querySelector('textarea')
+    : null;
+  const formMessage = document.getElementById('formMessage');
+  const successState = document.getElementById('successState');
+  const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+
+  if (!form) {
+    return;
+  }
+
+  function toggleDietaryDetails() {
+    if (!dietaryOption || !dietaryDetailsField) {
+      return;
+    }
+
+    const showOther = dietaryOption.value === 'Other/Multiple Allergies';
+    dietaryDetailsField.classList.toggle('hidden', !showOther);
+
+    if (dietaryDetailsTextarea) {
+      dietaryDetailsTextarea.required = showOther;
+      if (!showOther) {
+        dietaryDetailsTextarea.value = '';
+      }
+    }
+  }
+
+  if (dietaryOption) {
+    dietaryOption.addEventListener('change', toggleDietaryDetails);
+    toggleDietaryDetails();
+  }
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (formMessage) {
       formMessage.textContent = '';
+    }
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
     }
 
     const formData = new FormData(form);
@@ -75,7 +106,12 @@ if (form) {
         body: JSON.stringify(payload)
       });
 
-      const result = await response.json();
+      let result = {};
+      try {
+        result = await response.json();
+      } catch {
+        result = {};
+      }
 
       if (!response.ok) {
         if (formMessage) {
@@ -86,13 +122,26 @@ if (form) {
       }
 
       form.reset();
-      dietaryDetailsField?.classList.add('hidden');
+      toggleDietaryDetails();
+
+      if (formMessage) {
+        formMessage.textContent = '';
+      }
+
       form.classList.add('hidden');
-      successState?.classList.remove('hidden');
+
+      if (successState) {
+        successState.classList.remove('hidden');
+      }
     } catch (error) {
       if (formMessage) {
         formMessage.textContent =
           'Network error. Please refresh the page and try again.';
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit RSVP';
       }
     }
   });
@@ -104,9 +153,11 @@ async function loadAdminDashboard() {
   const statsGuests = document.getElementById('statsGuests');
   const tableBody = document.getElementById('adminTableBody');
 
-  if (!tableBody) return;
+  if (!tableBody) {
+    return;
+  }
 
-  tableBody.innerHTML = `<tr><td colspan="7">Loading RSVPs...</td></tr>`;
+  tableBody.innerHTML = '<tr><td colspan="7">Loading RSVPs...</td></tr>';
 
   try {
     const response = await fetch('/api/rsvps', {
@@ -115,18 +166,31 @@ async function loadAdminDashboard() {
       }
     });
 
-    const result = await response.json();
+    let result = {};
+    try {
+      result = await response.json();
+    } catch {
+      result = {};
+    }
 
     if (!response.ok || !result.ok) {
       throw new Error(result.message || 'Unable to load RSVPs.');
     }
 
-    if (statsTotal) statsTotal.textContent = result.stats.totalRsvps;
-    if (statsPlusOne) statsPlusOne.textContent = result.stats.plusOnes;
-    if (statsGuests) statsGuests.textContent = result.stats.totalGuests;
+    if (statsTotal) {
+      statsTotal.textContent = String(result.stats?.totalRsvps ?? 0);
+    }
 
-    if (!result.rsvps.length) {
-      tableBody.innerHTML = `<tr><td colspan="7">No RSVPs yet.</td></tr>`;
+    if (statsPlusOne) {
+      statsPlusOne.textContent = String(result.stats?.plusOnes ?? 0);
+    }
+
+    if (statsGuests) {
+      statsGuests.textContent = String(result.stats?.totalGuests ?? 0);
+    }
+
+    if (!Array.isArray(result.rsvps) || result.rsvps.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="7">No RSVPs yet.</td></tr>';
       return;
     }
 
@@ -139,32 +203,44 @@ async function loadAdminDashboard() {
             <td>${escapeHtml(entry.phone)}</td>
             <td>${escapeHtml(entry.dietary_option)}</td>
             <td>${escapeHtml(entry.dietary_details || '-')}</td>
-            <td>${formatDate(entry.created_at)}</td>
+            <td>${escapeHtml(formatDate(entry.created_at))}</td>
             <td>
-              <button class="delete-button" data-id="${entry.id}">Delete</button>
+              <button class="delete-button" data-id="${escapeHtml(entry.id)}">Delete</button>
             </td>
           </tr>
         `;
       })
       .join('');
 
-    tableBody.querySelectorAll('.delete-button').forEach((button) => {
+    const deleteButtons = tableBody.querySelectorAll('.delete-button');
+
+    deleteButtons.forEach((button) => {
       button.addEventListener('click', async () => {
         const id = button.dataset.id;
-        if (!id) return;
+
+        if (!id) {
+          return;
+        }
 
         const confirmed = window.confirm('Delete this RSVP?');
-        if (!confirmed) return;
+        if (!confirmed) {
+          return;
+        }
 
         try {
-          const response = await fetch(`/api/rsvp/${id}`, {
+          const response = await fetch(`/api/rsvp/${encodeURIComponent(id)}`, {
             method: 'DELETE',
             headers: {
               Accept: 'application/json'
             }
           });
 
-          const result = await response.json();
+          let result = {};
+          try {
+            result = await response.json();
+          } catch {
+            result = {};
+          }
 
           if (!response.ok || !result.ok) {
             throw new Error(result.message || 'Delete failed.');
@@ -177,13 +253,16 @@ async function loadAdminDashboard() {
       });
     });
   } catch (error) {
-    tableBody.innerHTML = `<tr><td colspan="7">Unable to load RSVPs.</td></tr>`;
+    tableBody.innerHTML = '<tr><td colspan="7">Unable to load RSVPs.</td></tr>';
   }
 }
 
 function formatDate(value) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '-';
+
+  if (Number.isNaN(date.getTime())) {
+    return '-';
+  }
 
   return date.toLocaleString();
 }
@@ -197,4 +276,8 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-loadAdminDashboard();
+document.addEventListener('DOMContentLoaded', () => {
+  initCountdown();
+  initRsvpForm();
+  loadAdminDashboard();
+});
