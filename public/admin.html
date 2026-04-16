@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RSVP Admin</title>
+    <meta name="description" content="Wedding RSVP Admin Dashboard" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,56 +13,60 @@
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
-    <main class="section section-cream admin-page">
+  <body class="admin-page">
+    <main class="section section-cream">
       <div class="container">
-        <p class="section-subtitle">Dashboard</p>
-        <h1 class="section-title">RSVP Admin</h1>
-        <div class="admin-key-row">
-          <label>
-            <span>Admin Key</span>
-            <input type="password" id="adminKey" placeholder="Enter admin key if enabled" />
-          </label>
-          <button class="button" id="loadDashboard">Load Dashboard</button>
-        </div>
-        <div class="card-grid three-col admin-stats" id="statsGrid">
-          <article class="card centered-card compact-card">
-            <h3>Total RSVPs</h3>
-            <p id="totalRsvps">0</p>
+        <header class="centered-card" style="margin-bottom: 2rem;">
+          <p class="section-subtitle">Wedding Dashboard</p>
+          <h1 class="section-title">RSVP Admin</h1>
+        </header>
+
+        <section class="card-grid three-col" style="margin-bottom: 2rem;">
+          <article class="card centered-card">
+            <p class="section-subtitle" style="margin-bottom: 0.5rem;">Total RSVPs</p>
+            <h2 id="statsTotal">0</h2>
           </article>
-          <article class="card centered-card compact-card">
-            <h3>RSVPs with Plus One</h3>
-            <p id="plusOnes">0</p>
+
+          <article class="card centered-card">
+            <p class="section-subtitle" style="margin-bottom: 0.5rem;">Plus Ones</p>
+            <h2 id="statsPlusOne">0</h2>
           </article>
-          <article class="card centered-card compact-card">
-            <h3>Total Guests</h3>
-            <p id="totalGuests">0</p>
+
+          <article class="card centered-card">
+            <p class="section-subtitle" style="margin-bottom: 0.5rem;">Total Guests</p>
+            <h2 id="statsGuests">0</h2>
           </article>
-        </div>
-        <article class="card table-card">
+        </section>
+
+        <section class="card table-card">
+          <div style="padding-bottom: 1rem;">
+            <h2 style="margin: 0;">Guest List</h2>
+          </div>
+
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Full Name</th>
                   <th>Email</th>
                   <th>Phone</th>
-                  <th>Dietary</th>
+                  <th>Dietary Option</th>
+                  <th>Details</th>
                   <th>Submitted</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="rsvpTableBody">
+              <tbody id="adminTableBody">
                 <tr>
-                  <td colspan="6">No entries loaded yet.</td>
+                  <td colspan="7">Loading RSVPs...</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="form-message" id="adminMessage"></p>
-        </article>
+        </section>
       </div>
     </main>
-    <script src="/admin.js"></script>
+
+    <script src="/script.js"></script>
   </body>
 </html>
