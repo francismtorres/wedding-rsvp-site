@@ -11,10 +11,7 @@
   --lavender: #bba9c6;
   --border: #e5e5e5;
 }
-.itinerary-section h2,
-.dress-code-section h2 {
-  text-align: center;
-}
+
 * {
   box-sizing: border-box;
 }
@@ -72,6 +69,11 @@ img {
   margin-bottom: 1rem;
 }
 
+.hero-invite-line {
+  margin-top: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
 .section-title,
 .couple-name,
 h1,
@@ -89,15 +91,6 @@ h3 {
 
 .solo-title {
   margin-bottom: 2rem;
-}
-
-.hero-intro {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #5E6C58;
-  text-align: center;
 }
 
 .hero {
@@ -132,12 +125,6 @@ h3 {
   font-size: clamp(2rem, 4vw, 3rem);
   color: var(--sage-text);
   margin: 0.75rem 0;
-}
-
-.hero-copy {
-  max-width: 580px;
-  margin: 1.5rem auto;
-  color: var(--text-secondary);
 }
 
 .hero-meta {
@@ -549,5 +536,9 @@ th {
   .card,
   .count-box {
     padding: 1.25rem;
+  }
+
+  .couple-name {
+    letter-spacing: 0.08em;
   }
 }
