@@ -111,12 +111,19 @@ h3 {
   padding: 2rem 1rem;
 }
 
+.couple-name-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0.4rem 0;
+}
+
 .couple-name {
   font-size: clamp(3rem, 7vw, 5.8rem);
   letter-spacing: 0.15em;
   font-weight: 400;
   line-height: 0.95;
-  margin: 0.4rem 0;
+  margin: 0;
 }
 
 .ampersand {
@@ -261,11 +268,11 @@ h3 {
   color: var(--text-secondary);
 }
 
-.italic-quote {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.55rem;
+.registry-text {
+  font-size: 1.1rem;
   margin: 0;
+  color: var(--text-primary);
+  font-style: normal;
 }
 
 .accordion-group {
@@ -377,49 +384,34 @@ textarea:focus {
   position: absolute;
   width: min(34vw, 430px);
   opacity: 0.92;
-  animation: float 6s ease-in-out infinite;
   pointer-events: none;
 }
 
 .floral-top-left {
   top: -80px;
   left: -80px;
-  animation-delay: 0.2s;
 }
 
 .floral-top-right {
   top: -80px;
   right: -80px;
   transform: scaleX(-1);
-  animation-delay: 0.4s;
 }
 
 .floral-bottom-left {
   bottom: -80px;
   left: -80px;
   transform: scaleY(-1);
-  animation-delay: 0.6s;
 }
 
 .floral-bottom-right {
   bottom: -80px;
   right: -80px;
   transform: scale(-1, -1);
-  animation-delay: 0.8s;
 }
 
 .fade-in-up {
   animation: fadeInUp 900ms ease forwards;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -10px;
-  }
 }
 
 @keyframes fadeInUp {
