@@ -11,7 +11,10 @@
   --lavender: #bba9c6;
   --border: #e5e5e5;
 }
-
+.itinerary-section h2,
+.dress-code-section h2 {
+  text-align: center;
+}
 * {
   box-sizing: border-box;
 }
@@ -86,6 +89,15 @@ h3 {
 
 .solo-title {
   margin-bottom: 2rem;
+}
+
+.hero-intro {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #5E6C58;
+  text-align: center;
 }
 
 .hero {
