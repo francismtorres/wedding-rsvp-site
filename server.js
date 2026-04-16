@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = path.join(__dirname, 'data');
 const RSVP_FILE = path.join(DATA_DIR, 'rsvps.json');
-const FORMSPREE_ENDPOINT = process.env.FORMSPREE_ENDPOINT || '';
+const FORMSPREE_ENDPOINT = (process.env.FORMSPREE_ENDPOINT || '').trim();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +36,10 @@ async function writeRsvps(rsvps) {
 
 function normalizeEmail(email) {
   return String(email || '').trim().toLowerCase();
+}
+
+function safeText(value) {
+  return String(value || '').trim();
 }
 
 async function forwardToFormspree(rsvp) {
@@ -74,11 +78,11 @@ async function forwardToFormspree(rsvp) {
 
 app.post('/api/rsvp', async (req, res) => {
   try {
-    const fullName = String(req.body.fullName || '').trim();
+    const fullName = safeText(req.body.fullName);
     const email = normalizeEmail(req.body.email);
-    const phone = String(req.body.phone || '').trim();
-    const dietaryOption = String(req.body.dietaryOption || '').trim();
-    const dietaryDetails = String(req.body.dietaryDetails || '').trim();
+    const phone = safeText(req.body.phone);
+    const dietaryOption = safeText(req.body.dietaryOption);
+    const dietaryDetails = safeText(req.body.dietaryDetails);
 
     if (!fullName || !email || !phone || !dietaryOption) {
       return res.status(400).json({
@@ -89,7 +93,9 @@ app.post('/api/rsvp', async (req, res) => {
 
     const rsvps = await readRsvps();
 
-    const duplicate = rsvps.find((entry) => normalizeEmail(entry.email) === email);
+    const duplicate = rsvps.find(
+      (entry) => normalizeEmail(entry.email) === email
+    );
 
     if (duplicate) {
       return res.status(409).json({
@@ -134,6 +140,7 @@ app.post('/api/rsvp', async (req, res) => {
 app.get('/api/rsvps', async (_req, res) => {
   try {
     const rsvps = await readRsvps();
+
     return res.json({
       ok: true,
       rsvps,
@@ -154,8 +161,10 @@ app.get('/api/rsvps', async (_req, res) => {
 
 app.delete('/api/rsvp/:id', async (req, res) => {
   try {
+    const id = safeText(req.params.id);
     const rsvps = await readRsvps();
-    const filtered = rsvps.filter((entry) => entry.id !== req.params.id);
+    const filtered = rsvps.filter((entry) => entry.id !== id);
+
     await writeRsvps(filtered);
 
     return res.json({ ok: true });
