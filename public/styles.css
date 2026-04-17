@@ -561,3 +561,33 @@ th {
 #attendanceDetails:not(.hidden) {
   margin-top: 10px;
 }
+
+/* Elevated input styling */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: all 0.25s ease;
+}
+
+/* Focus state (luxury feel) */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #5e6c58;
+  box-shadow: 0 0 0 3px rgba(94, 108, 88, 0.1);
+}
+
+/* Slight hover lift */
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #bcbcbc;
+}
