@@ -591,3 +591,107 @@ select:hover,
 textarea:hover {
   border-color: #bcbcbc;
 }
+.button {
+  background: #5e6c58;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Hover = subtle lift */
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Click feel */
+.button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Disabled state */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+label span {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6f6f6f;
+  margin-bottom: 6px;
+}
+form label {
+  display: block;
+  margin-bottom: 16px;
+}
+.success-state {
+  text-align: center;
+  padding: 30px 20px;
+  animation: fadeInUp 0.6s ease;
+}
+
+.success-heart {
+  font-size: 28px;
+  margin-bottom: 10px;
+  animation: pop 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}  
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6f6f6f;
+  padding: 10px;
+}
+
+td {
+  padding: 12px 10px;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+body {
+  background-color: #f8f7f4;
+  -webkit-font-smoothing: antialiased;
+}
