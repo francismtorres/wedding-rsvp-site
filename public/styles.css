@@ -533,4 +533,22 @@ th {
   .couple-name {
     letter-spacing: 0.08em;
   }
+
+  /* Smooth show/hide for RSVP sections */
+#attendanceDetails,
+#dietaryDetailsField {
+  overflow: hidden;
+  transition: all 0.35s ease;
+  opacity: 1;
+  max-height: 500px;
+}
+
+/* Hidden state (animated) */
+.hidden {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  pointer-events: none;
+}
 }
