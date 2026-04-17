@@ -551,4 +551,12 @@ th {
   margin-bottom: 0 !important;
   pointer-events: none;
 }
+
+  #attendanceDetails {
+  transition: all 0.4s ease;
+}
+
+#dietaryDetailsField {
+  transition: all 0.3s ease;
+}
 }
