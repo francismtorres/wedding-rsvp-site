@@ -49,10 +49,11 @@ async function forwardToFormspree(rsvp) {
   }
 
   const payload = {
+    attendanceStatus: rsvp.attendance_status,
     fullName: rsvp.full_name,
     email: rsvp.email,
-    phone: rsvp.phone,
-    dietaryOption: rsvp.dietary_option,
+    phone: rsvp.phone || '',
+    dietaryOption: rsvp.dietary_option || '',
     dietaryDetails: rsvp.dietary_details || '',
     submittedAt: rsvp.created_at,
     _subject: `New Wedding RSVP from ${rsvp.full_name}`
@@ -78,13 +79,21 @@ async function forwardToFormspree(rsvp) {
 
 app.post('/api/rsvp', async (req, res) => {
   try {
+    const attendanceStatus = safeText(req.body.attendanceStatus);
     const fullName = safeText(req.body.fullName);
     const email = normalizeEmail(req.body.email);
     const phone = safeText(req.body.phone);
     const dietaryOption = safeText(req.body.dietaryOption);
     const dietaryDetails = safeText(req.body.dietaryDetails);
 
-    if (!fullName || !email || !phone || !dietaryOption) {
+    if (!attendanceStatus || !fullName || !email) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Please complete all required fields.'
+      });
+    }
+
+    if (attendanceStatus === 'Happily Accept' && (!phone || !dietaryOption)) {
       return res.status(400).json({
         ok: false,
         message: 'Please complete all required fields.'
@@ -104,14 +113,19 @@ app.post('/api/rsvp', async (req, res) => {
       });
     }
 
+    const isDecline = attendanceStatus === 'Regretfully Decline';
+
     const rsvp = {
       id: Date.now().toString(),
+      attendance_status: attendanceStatus,
       full_name: fullName,
       email,
-      phone,
-      dietary_option: dietaryOption,
+      phone: isDecline ? '' : phone,
+      dietary_option: isDecline ? '' : dietaryOption,
       dietary_details:
-        dietaryOption === 'Other/Multiple Allergies' ? dietaryDetails : '',
+        !isDecline && dietaryOption === 'Other/Multiple Allergies'
+          ? dietaryDetails
+          : '',
       created_at: new Date().toISOString()
     };
 
@@ -140,6 +154,9 @@ app.post('/api/rsvp', async (req, res) => {
 app.get('/api/rsvps', async (_req, res) => {
   try {
     const rsvps = await readRsvps();
+    const acceptedCount = rsvps.filter(
+      (entry) => entry.attendance_status === 'Happily Accept'
+    ).length;
 
     return res.json({
       ok: true,
@@ -147,7 +164,7 @@ app.get('/api/rsvps', async (_req, res) => {
       stats: {
         totalRsvps: rsvps.length,
         plusOnes: 0,
-        totalGuests: rsvps.length
+        totalGuests: acceptedCount
       }
     });
   } catch (error) {
