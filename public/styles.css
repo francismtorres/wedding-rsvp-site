@@ -559,4 +559,7 @@ th {
 #dietaryDetailsField {
   transition: all 0.3s ease;
 }
+  #attendanceDetails:not(.hidden) {
+  margin-top: 10px;
+}
 }
