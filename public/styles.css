@@ -950,3 +950,8 @@ tbody tr:hover {
     width: 100%;
   }
 }
+  .info-card p + p {
+  margin-top: 0.35rem;
+  color: var(--sage-text);
+  font-size: 0.95rem;
+}
