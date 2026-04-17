@@ -40,6 +40,8 @@ function initCountdown() {
 
 function initRsvpForm() {
   const form = document.getElementById('rsvpForm');
+  const attendanceStatus = document.getElementById('attendanceStatus');
+  const attendanceDetails = document.getElementById('attendanceDetails');
   const dietaryOption = document.getElementById('dietaryOption');
   const dietaryDetailsField = document.getElementById('dietaryDetailsField');
   const dietaryDetailsTextarea = dietaryDetailsField
@@ -48,6 +50,7 @@ function initRsvpForm() {
   const formMessage = document.getElementById('formMessage');
   const successState = document.getElementById('successState');
   const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+  const phoneInput = form ? form.querySelector('input[name="phone"]') : null;
 
   if (!form) {
     return;
@@ -67,6 +70,49 @@ function initRsvpForm() {
         dietaryDetailsTextarea.value = '';
       }
     }
+  }
+
+  function toggleAttendanceDetails() {
+    if (!attendanceStatus || !attendanceDetails) {
+      return;
+    }
+
+    const isDecline = attendanceStatus.value === 'Regretfully Decline';
+    attendanceDetails.classList.toggle('hidden', isDecline);
+
+    if (phoneInput) {
+      phoneInput.required = !isDecline;
+      if (isDecline) {
+        phoneInput.value = '';
+      }
+    }
+
+    if (dietaryOption) {
+      dietaryOption.required = !isDecline;
+      if (isDecline) {
+        dietaryOption.value = '';
+      }
+    }
+
+    if (dietaryDetailsField) {
+      dietaryDetailsField.classList.add('hidden');
+    }
+
+    if (dietaryDetailsTextarea) {
+      dietaryDetailsTextarea.required = false;
+      if (isDecline) {
+        dietaryDetailsTextarea.value = '';
+      }
+    }
+
+    if (!isDecline) {
+      toggleDietaryDetails();
+    }
+  }
+
+  if (attendanceStatus) {
+    attendanceStatus.addEventListener('change', toggleAttendanceDetails);
+    toggleAttendanceDetails();
   }
 
   if (dietaryOption) {
@@ -89,6 +135,7 @@ function initRsvpForm() {
     const formData = new FormData(form);
 
     const payload = {
+      attendanceStatus: String(formData.get('attendanceStatus') || '').trim(),
       fullName: String(formData.get('fullName') || '').trim(),
       email: String(formData.get('email') || '').trim(),
       phone: String(formData.get('phone') || '').trim(),
@@ -122,6 +169,7 @@ function initRsvpForm() {
       }
 
       form.reset();
+      toggleAttendanceDetails();
       toggleDietaryDetails();
 
       if (formMessage) {
@@ -157,7 +205,7 @@ async function loadAdminDashboard() {
     return;
   }
 
-  tableBody.innerHTML = '<tr><td colspan="7">Loading RSVPs...</td></tr>';
+  tableBody.innerHTML = '<tr><td colspan="8">Loading RSVPs...</td></tr>';
 
   try {
     const response = await fetch('/api/rsvps', {
@@ -190,7 +238,7 @@ async function loadAdminDashboard() {
     }
 
     if (!Array.isArray(result.rsvps) || result.rsvps.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="7">No RSVPs yet.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="8">No RSVPs yet.</td></tr>';
       return;
     }
 
@@ -198,10 +246,11 @@ async function loadAdminDashboard() {
       .map((entry) => {
         return `
           <tr>
+            <td>${escapeHtml(entry.attendance_status || '-')}</td>
             <td>${escapeHtml(entry.full_name)}</td>
             <td>${escapeHtml(entry.email)}</td>
-            <td>${escapeHtml(entry.phone)}</td>
-            <td>${escapeHtml(entry.dietary_option)}</td>
+            <td>${escapeHtml(entry.phone || '-')}</td>
+            <td>${escapeHtml(entry.dietary_option || '-')}</td>
             <td>${escapeHtml(entry.dietary_details || '-')}</td>
             <td>${escapeHtml(formatDate(entry.created_at))}</td>
             <td>
@@ -253,7 +302,7 @@ async function loadAdminDashboard() {
       });
     });
   } catch (error) {
-    tableBody.innerHTML = '<tr><td colspan="7">Unable to load RSVPs.</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="8">Unable to load RSVPs.</td></tr>';
   }
 }
 
