@@ -214,48 +214,65 @@
           <p class="section-subtitle">Kindly Respond by June 15, 2026</p>
           <h2 class="section-title">RSVP</h2>
           <article class="card form-card">
-            <form id="rsvpForm" action="https://formspree.io/f/mpqkppgz" method="POST">
-              <label>
-                <span>Full Name</span>
-                <input type="text" name="fullName" required />
-              </label>
-              <label>
-                <span>Email Address</span>
-                <input type="email" name="email" required />
-              </label>
-              <label>
-                <span>Phone Number</span>
-                <input type="tel" name="phone" required />
-              </label>
-              <label>
-                <span>Dietary Restrictions &amp; Allergies</span>
-                <select name="dietaryOption" id="dietaryOption" required>
-                  <option value="">Select an option</option>
-                  <option>None</option>
-                  <option>Vegetarian</option>
-                  <option>Vegan</option>
-                  <option>Gluten-Free</option>
-                  <option>Nut Allergy</option>
-                  <option>Dairy-Free</option>
-                  <option>Shellfish Allergy</option>
-                  <option>Halal</option>
-                  <option>Kosher</option>
-                  <option>Other/Multiple Allergies</option>
-                </select>
-              </label>
-              <label id="dietaryDetailsField" class="hidden">
-                <span>Please share the details</span>
-                <textarea name="dietaryDetails" rows="4"></textarea>
-              </label>
-              <button type="submit" class="button button-full">Submit RSVP</button>
-              <p class="form-message" id="formMessage"></p>
-            </form>
-            <div id="successState" class="success-state hidden" aria-live="polite">
-              <div class="success-heart">❤</div>
-              <h3>Thank you for your RSVP</h3>
-              <p>We are so excited to celebrate with you.</p>
-            </div>
-          </article>
+  <form id="rsvpForm" novalidate>
+    <label>
+      <span>Attendance</span>
+      <select name="attendanceStatus" id="attendanceStatus" required>
+        <option value="">Select a response</option>
+        <option value="Happily Accept">Happily Accept</option>
+        <option value="Regretfully Decline">Regretfully Decline</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Full Name</span>
+      <input type="text" name="fullName" required />
+    </label>
+
+    <label>
+      <span>Email Address</span>
+      <input type="email" name="email" required />
+    </label>
+
+    <div id="attendanceDetails">
+      <label>
+        <span>Phone Number</span>
+        <input type="tel" name="phone" />
+      </label>
+
+      <label>
+        <span>Dietary Restrictions &amp; Allergies</span>
+        <select name="dietaryOption" id="dietaryOption">
+          <option value="">Select an option</option>
+          <option>None</option>
+          <option>Vegetarian</option>
+          <option>Vegan</option>
+          <option>Gluten-Free</option>
+          <option>Nut Allergy</option>
+          <option>Dairy-Free</option>
+          <option>Shellfish Allergy</option>
+          <option>Halal</option>
+          <option>Kosher</option>
+          <option>Other/Multiple Allergies</option>
+        </select>
+      </label>
+
+      <label id="dietaryDetailsField" class="hidden">
+        <span>Please share the details</span>
+        <textarea name="dietaryDetails" rows="4"></textarea>
+      </label>
+    </div>
+
+    <button type="submit" class="button button-full">Submit RSVP</button>
+    <p class="form-message" id="formMessage"></p>
+  </form>
+
+  <div id="successState" class="success-state hidden" aria-live="polite">
+    <div class="success-heart">❤</div>
+    <h3>Thank you for your RSVP</h3>
+    <p>We truly appreciate your response.</p>
+  </div>
+</article>
         </div>
       </section>
 
