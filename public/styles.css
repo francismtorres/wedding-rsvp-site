@@ -695,3 +695,258 @@ body {
   background-color: #f8f7f4;
   -webkit-font-smoothing: antialiased;
 }
+/* =========================
+   FINAL BOSS POLISH
+   Paste at bottom of styles.css
+   ========================= */
+
+/* Smoother typography rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* More luxurious hero spacing */
+.hero-inner {
+  max-width: 820px;
+}
+
+.couple-name-block {
+  gap: 0.1rem;
+  margin: 0.55rem 0;
+}
+
+.couple-name {
+  letter-spacing: 0.12em;
+  line-height: 0.9;
+}
+
+.ampersand {
+  margin: 1rem 0 0.85rem;
+  opacity: 0.95;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+}
+
+.hero-invite-line {
+  margin-top: 1.4rem;
+  margin-bottom: 1.75rem;
+}
+
+/* Softer card presentation */
+.card {
+  border: 1px solid rgba(229, 229, 229, 0.95);
+  box-shadow: 0 10px 30px rgba(28, 25, 23, 0.035);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(28, 25, 23, 0.06);
+  border-color: rgba(138, 154, 134, 0.22);
+}
+
+/* Elevated RSVP form */
+.form-card {
+  box-shadow: 0 18px 40px rgba(28, 25, 23, 0.05);
+}
+
+/* Inputs: cleaner premium feel */
+input,
+select,
+textarea {
+  border: 1px solid transparent;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0.95rem 0;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-bottom-color: rgba(138, 154, 134, 0.7);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-bottom-color: var(--sage);
+  box-shadow: 0 8px 20px rgba(138, 154, 134, 0.08);
+  background: #fff;
+}
+
+/* Better labels */
+label span {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--sage-text);
+}
+
+/* Better select arrow spacing */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Premium buttons */
+.button,
+.delete-button {
+  transition:
+    background 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    opacity 220ms ease;
+}
+
+.button:hover,
+.delete-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(28, 25, 23, 0.08);
+}
+
+.button:active,
+.delete-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* RSVP conditional sections animate more gracefully */
+#attendanceDetails,
+#dietaryDetailsField {
+  overflow: hidden;
+  opacity: 1;
+  max-height: 500px;
+  transition:
+    opacity 0.35s ease,
+    max-height 0.35s ease,
+    margin 0.35s ease,
+    padding 0.35s ease;
+}
+
+#attendanceDetails:not(.hidden) {
+  margin-top: 0.35rem;
+}
+
+.hidden {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  pointer-events: none;
+}
+
+/* Success state feels more special */
+.success-state {
+  text-align: center;
+  padding: 2.4rem 0 0.4rem;
+  animation: successFade 0.55s ease;
+}
+
+.success-heart {
+  font-size: 2.2rem;
+  color: var(--peach);
+  margin-bottom: 0.25rem;
+  animation: successPop 0.4s ease;
+}
+
+.success-state h3 {
+  margin-bottom: 0.35rem;
+}
+
+.success-state p {
+  color: var(--text-secondary);
+}
+
+@keyframes successFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes successPop {
+  0% {
+    transform: scale(0.82);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Itinerary cards feel more editorial */
+.info-card h3 {
+  margin-bottom: 0.2rem;
+}
+
+.info-card p {
+  color: var(--text-secondary);
+}
+
+/* FAQ gets a bit more elegance */
+.accordion-item {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.accordion-item:hover {
+  border-color: rgba(138, 154, 134, 0.28);
+  box-shadow: 0 8px 20px rgba(28, 25, 23, 0.03);
+}
+
+/* Admin table polish */
+.table-card {
+  box-shadow: 0 12px 28px rgba(28, 25, 23, 0.04);
+}
+
+th {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+}
+
+td {
+  color: var(--text-secondary);
+}
+
+tbody tr:hover {
+  background: rgba(243, 240, 234, 0.45);
+}
+
+/* Better mobile elegance */
+@media (max-width: 640px) {
+  .hero-inner {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .couple-name {
+    letter-spacing: 0.08em;
+    line-height: 0.92;
+  }
+
+  .eyebrow {
+    letter-spacing: 0.24em;
+  }
+
+  .button,
+  .delete-button {
+    width: 100%;
+  }
+}
